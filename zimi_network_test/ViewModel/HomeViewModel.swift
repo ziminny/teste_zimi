@@ -8,11 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct OutputValus {
-    let id = UUID().uuidString
-    let outputValue:Binding<String>
-    let state:Binding<Bool>
-}
+ 
 
 @MainActor
 class HomeViewModel:ObservableObject {
@@ -21,8 +17,10 @@ class HomeViewModel:ObservableObject {
     @Published var addNewDeviceIsPresent = false
     @Published var networkName = ""
     @Published var model:ZimiNetwork?
- 
-    @Published var outputNames:[OutputValus] = []
+
+    @Published var outputNames:[String] = [""]
+    @Published var infos:[String] = ["0000"]
+    @Published var isItemOn:[Bool] = [false]
     
     @Published var selectedDeviceType:DeviceType = .dimmer
     
@@ -53,6 +51,9 @@ class HomeViewModel:ObservableObject {
                 throw JSONError.unknown
             }
             try jsonService.addNetwork(withNetworkName: self.networkName)
+            if !isEmptyFileDirectory {
+                self.getModel()
+            }
         } catch {
             print("ERROR save json -> \(error)")
         }
@@ -76,22 +77,16 @@ class HomeViewModel:ObservableObject {
         }
         var device = Device()
         
-        var outputs:[String] = []
-        var infos:[String] = []
+        var channels:[Channel] = []
         
-        outputNames.forEach { item in
-            outputs.append(item.outputValue.wrappedValue)
-            if item.state.wrappedValue {
-                infos.append("00F3")
-            } else {
-                infos.append("0000")
-            }
-            
+        for index in 0..<outputNames.count {
+            var channel = Channel(outputName: outputNames[index],info: infos[index])
+            channels.append(channel)
         }
+        
        
-        device.outputNames = outputs
-        device.info = infos
-        device.numberOfChannel = outputs.count + (self.model?.devices?.count ?? 0)
+        device.channels = channels
+        device.numberOfChannel = channels.count
         device.deviceType = selectedDeviceType
         
         devices.append(device)

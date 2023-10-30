@@ -16,76 +16,83 @@ struct HomeView: View {
             
             if let model = viewModel.model {
               
-                VStack(alignment:.leading) {
+                NavigationView {
+                    VStack(alignment:.leading) {
 
-                    HStack {
-                        VStack(alignment:.leading) {
-                            // MARK: Header
-                            Text(model.network?.name ?? "Unknown name")
-                                .font(.system(size: 16,weight: .semibold))
-                            Button(action: {
-                                viewModel.addNewDeviceIsPresent.toggle()
-                            }, label: {
-                                HStack {
-                                    Image(systemName: "plus")
-                                    Text("Add new device")
-                                }
-                            })
-                            .offset(y:4)
-                            .sheet(isPresented: $viewModel.addNewDeviceIsPresent, content: {
-                                self.addNewDevice()
-                            })
-                        }
-                        Spacer()
-                    }.padding(.top) // End header
-                    
-                    if let devices = viewModel.model?.devices {
+                        HStack {
+                            VStack(alignment:.leading) {
+                                // MARK: Header
+                                Text(model.network?.name ?? "Unknown name")
+                                    .font(.system(size: 16,weight: .semibold))
+                                Button(action: {
+                                    viewModel.addNewDeviceIsPresent.toggle()
+                                }, label: {
+                                    HStack {
+                                        Image(systemName: "plus")
+                                        Text("Add new device")
+                                    }
+                                })
+                                .offset(y:4)
+                                .sheet(isPresented: $viewModel.addNewDeviceIsPresent, content: {
+                                    self.addNewDevice()
+                                })
+                            }
+                            Spacer()
+                        }.padding(.top) // End header
                         
-                      
-                        
-                        VStack(alignment:.leading) {
-                            List(devices, id:\.id) { device in
- 
-                                Section(device.deviceType?.rawValue ?? "sem nome") {
-                                    if let outputNames = device.outputNames {
-                                        ForEach(outputNames, id:\.hashValue) { output in
-                                            VStack {
-                                                Button {
-                                                     
-                                                } label: {
-                                                    HStack {
-                                                        if let deviceType = device.deviceType {
-                                                            // TODO: Logical on of here
-                                                            Image(systemName:deviceType.icon.on)
-                                                                .font(.system(size: 24,weight:.semibold))
-                                                                .foregroundStyle(Color.red)
+                        if let devices = viewModel.model?.devices {
+           
+                            VStack(alignment:.leading) {
+                                List(devices, id:\.id) { device in
+     
+                                    Section(device.deviceType?.rawValue ?? "sem nome") {
+                                        if let channels = device.channels {
+                                            HStack(alignment:.center) {
+                                                VStack(alignment:.leading,spacing:8) {
+                                                    ForEach(channels, id:\.id) { channel in
+                                                        VStack {
+                                                            Button {
+                                                                 
+                                                            } label: {
+                                                                HStack {
+                                                                    if let deviceType = device.deviceType {
+                                                                        // TODO: Logical on of here
+                                                                        Image(systemName:deviceType.icon.on)
+                                                                            .font(.system(size: 24,weight:.semibold))
+                                                                            .foregroundStyle(Color.red)
+                                                                    }
+                                                                    
+                                                                    Text(channel.outputName ?? "Unknown name")
+                                                                }
+                                                            }
+
                                                         }
-                                                        
-                                                        Text(output)
                                                     }
                                                 }
-
+                                                Spacer()
+                                                NavigationLink(destination: ConfigurationView(device: device)) {}
+                                                
                                             }
+                                            
+        
+                                            
                                         }
-                                        
-    
-                                        
                                     }
+                                    .listRowSeparator(.hidden)
                                 }
-                                .listRowSeparator(.hidden)
+                                .listStyle(.plain)
                             }
-                            .listStyle(.plain)
+                            .padding(.top)
+                            .onAppear {
+                                model.devices?.forEach({ item in
+                                    print(item.channels)
+                                })
+                            }
                         }
-                        .padding(.top)
-                        .onAppear {
-                            model.devices?.forEach({ item in
-                                print(item.outputNames)
-                            })
-                        }
-                    }
-                    
-                    Spacer()
-                }.padding()
+                        
+                        Spacer()
+                    }.padding()
+                }
             } else {
                 EmptyHomeView()
                   .environmentObject(viewModel)
@@ -107,16 +114,24 @@ struct HomeView: View {
                             .font(.system(size: 16,weight: .semibold))
                         Spacer()
                         Button(action: {
+                            
+                           // TODO: aqui
                           
-                            viewModel.outputNames.append(.init(outputValue: Binding(get: {
-                                return viewModel.inputValue
-                            }, set: { newValue in
-                                viewModel.inputValue = newValue
-                            }), state: Binding(get: {
-                                return viewModel.tootlgeValue
-                            }, set: { newValue in
-                                viewModel.tootlgeValue = newValue
-                            })))
+                            viewModel.outputNames.append("")
+                            viewModel.isItemOn.append(false)
+                            viewModel.infos.append("0000")
+                            
+                            let currentItem = viewModel.isItemOn[viewModel.isItemOn.count - 2]
+                            
+                            if currentItem {
+                                viewModel.infos[viewModel.infos.count - 1] = "00F3"
+                            }
+                            
+                            viewModel.infos.forEach { res in
+                                print(res)
+                            }
+
+                            
                           
                         }, label: {
                                 Image(systemName: "plus")
@@ -158,14 +173,15 @@ struct HomeView: View {
   
                         
                     ScrollView(showsIndicators: false) {
-                        ForEach(viewModel.outputNames,id: \.id) { item in
+                        ForEach(0..<viewModel.outputNames.count,id: \.self) { index in
                             VStack {
+                               
                                 // MARK: Output name
                                 VStack(alignment:.leading) {
                                     Text("Output name:")
                                         .font(.system(size: 14,weight: .regular))
                                     
-                                    TextField("Output name", text: item.outputValue)
+                                    TextField("Output name", text: $viewModel.outputNames[index])
                                         .textFieldStyle(.roundedBorder)
                                          
                                 }
@@ -177,12 +193,13 @@ struct HomeView: View {
                                         .font(.system(size: 14,weight: .regular))
                                     HStack {
                                        
-                                        Toggle(isOn: item.state, label: {
+                                        Toggle(isOn: $viewModel.isItemOn[index], label: {
                                             Text("60 min")
                                         })
                                     }
                                 }
                                 .padding(.top) // END Auto off
+                                
                             }
                             .padding()
                             .background(.gray.opacity(0.1))

@@ -8,11 +8,60 @@
 import SwiftUI
 
 struct ConfigurationView: View {
+    
+    let device:Device
+    
     var body: some View {
-        Text("ConfigurationView")
+        VStack {
+            HStack {
+                Text(device.deviceType?.rawValue ?? "Unknown device type")
+                    .font(.system(size: 18,weight: .semibold,design: .rounded))
+                Spacer()
+            }
+            .padding(.bottom)
+            
+            if let channels = device.channels {
+                ForEach(channels,id:\.id) { channel in
+                    VStack(spacing:16) {
+                        HStack(spacing:16) {
+                            Text(channel.outputName ?? "Unknown output name")
+                                .font(.system(size: 15,weight: .semibold,design: .rounded))
+                            Spacer()
+                            // TODO: Logical on of here
+                            if let icon = device.deviceType?.icon {
+                                Image(systemName:icon.on)
+                                    .font(.system(size: 15,weight:.semibold))
+                                    .foregroundStyle(Color.red)
+                            }
+
+                        }
+                        HStack {
+                            Text("Auto off")
+                                .font(.system(size: 14,weight: .regular))
+                            Spacer()
+                            
+                           Toggle(isOn: .constant(true), label: {
+
+                           }).scaleEffect(0.7)
+                               .frame(width: 60, height: 30)
+                               .offset(x:10)
+                        }
+                        .offset(y:-8)
+                        
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundStyle(Color.gray.opacity(0.5))
+                            .offset(y:-8)
+                        
+                    }
+                }
+            }
+            Spacer()
+        }
+        .padding()
     }
 }
 
 #Preview {
-    ConfigurationView()
+    ConfigurationView(device: Device())
 }
