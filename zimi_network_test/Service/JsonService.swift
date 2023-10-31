@@ -79,4 +79,29 @@ class JsonService {
         return try decoder.decode(ZimiNetwork.self, from: data)
     }
     
+    func getDevice(id:String) throws -> Device? {
+        let model = try self.getModel()
+        
+        return model.devices?.first(where: { device in
+            return device.id == id
+        })
+        
+    }
+    
+    func updateDevice(newDevice:Device) throws {
+        
+        let model = try self.getModel()
+        
+        guard let devices = model.devices else { return }
+        
+        var filteredDevice = devices.filter { device in
+            return device.id != newDevice.id
+        }
+        
+        filteredDevice.append(newDevice)
+        
+        try self.saveAndUpdateJson(devices:filteredDevice)
+        
+    }
+    
 }

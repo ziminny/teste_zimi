@@ -26,6 +26,7 @@ enum DeviceType:String,Codable,CaseIterable {
 }
 
 struct Device:Codable {
+
     var id: String = UUID().uuidString
     var deviceType: DeviceType?
     var numberOfChannel: Int?

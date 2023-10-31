@@ -70,8 +70,8 @@ struct HomeView: View {
                                                     }
                                                 }
                                                 Spacer()
-                                                NavigationLink(destination: ConfigurationView(device: device)) {}
-                                                
+                                                NavigationLink(destination: ConfigurationView(deviceId: device.id)) {}
+    
                                             }
                                             
         
@@ -85,7 +85,7 @@ struct HomeView: View {
                             .padding(.top)
                             .onAppear {
                                 model.devices?.forEach({ item in
-                                    print(item.channels)
+                                  
                                 })
                             }
                         }
@@ -128,7 +128,7 @@ struct HomeView: View {
                             }
                             
                             viewModel.infos.forEach { res in
-                                print(res)
+                             
                             }
 
                             

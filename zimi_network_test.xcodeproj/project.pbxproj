@@ -19,6 +19,8 @@
 		9D2E03C82AEEE6FE00712E15 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E03C72AEEE6FE00712E15 /* Device.swift */; };
 		9D2E03CA2AEEE75300712E15 /* ZimiNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E03C92AEEE75300712E15 /* ZimiNetwork.swift */; };
 		9D2E03CC2AEF596800712E15 /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E03CB2AEF596800712E15 /* ConfigurationView.swift */; };
+		9DFF0DEC2AF07E1700E19A45 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFF0DEB2AF07E1700E19A45 /* Utils.swift */; };
+		9DFF0DEE2AF0809900E19A45 /* ConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFF0DED2AF0809900E19A45 /* ConfigurationViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,8 @@
 		9D2E03C72AEEE6FE00712E15 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		9D2E03C92AEEE75300712E15 /* ZimiNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimiNetwork.swift; sourceTree = "<group>"; };
 		9D2E03CB2AEF596800712E15 /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
+		9DFF0DEB2AF07E1700E19A45 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		9DFF0DED2AF0809900E19A45 /* ConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,7 @@
 		9D2E03A62AEEC73700712E15 /* zimi_network_test */ = {
 			isa = PBXGroup;
 			children = (
+				9DFF0DEA2AF07E0B00E19A45 /* Utils */,
 				9D2E03C42AEEE69800712E15 /* Model */,
 				9D2E03C12AEEE59C00712E15 /* Service */,
 				9D2E03BE2AEEE3F600712E15 /* ViewModel */,
@@ -117,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				9D2E03BF2AEEE40500712E15 /* HomeViewModel.swift */,
+				9DFF0DED2AF0809900E19A45 /* ConfigurationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -137,6 +143,14 @@
 				9D2E03C72AEEE6FE00712E15 /* Device.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		9DFF0DEA2AF07E0B00E19A45 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				9DFF0DEB2AF07E1700E19A45 /* Utils.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,10 +229,12 @@
 				9D2E03AA2AEEC73700712E15 /* HomeView.swift in Sources */,
 				9D2E03C62AEEE6A400712E15 /* Network.swift in Sources */,
 				9D2E03A82AEEC73700712E15 /* zimi_network_testApp.swift in Sources */,
+				9DFF0DEC2AF07E1700E19A45 /* Utils.swift in Sources */,
 				9D2E03BD2AEEE19800712E15 /* EmptyHomeView.swift in Sources */,
 				9D2E03C82AEEE6FE00712E15 /* Device.swift in Sources */,
 				9D2E03C02AEEE40500712E15 /* HomeViewModel.swift in Sources */,
 				9D2E03CA2AEEE75300712E15 /* ZimiNetwork.swift in Sources */,
+				9DFF0DEE2AF0809900E19A45 /* ConfigurationViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
